@@ -6,18 +6,21 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Text BestScoreMenuText;
 
-    public GameObject BestScoreMenuObject;
-    public GameObject NameText;
-
+    public Text NameText;
     public static GameManager Instance;
+    private bool m_isSaveFileAvailable;
 
     public int HighScore;
     public string HighScoreName;
 
     public string CurrentSessionName;
 
-    public readonly string path = Application.persistentDataPath + "/savedata.json";
+    public bool SaveFileLoaded()
+    {
+        return m_isSaveFileAvailable;
+    }
 
     [System.Serializable]
     class SaveData
@@ -28,12 +31,15 @@ public class GameManager : MonoBehaviour
 
     public void SaveScore()
     {
-        SaveData data = new SaveData();
-        data.Score = HighScore;
-        data.Name = HighScoreName;
+        SaveData data = new SaveData
+        {
+            Score = HighScore,
+            Name = HighScoreName
+        };
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/savedata.json", json);
+        m_isSaveFileAvailable = true;
     }
 
     public void LoadScore()
@@ -41,6 +47,8 @@ public class GameManager : MonoBehaviour
         string path = Application.persistentDataPath + "/savedata.json";
         if (File.Exists(path))
         {
+            m_isSaveFileAvailable = true;
+
             string json = File.ReadAllText(path);
             SaveData Data = JsonUtility.FromJson<SaveData>(json);
 
@@ -67,19 +75,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        string Path = Application.persistentDataPath + "/savedata.json";
         
-        if (File.Exists(path))
+        if (File.Exists(Path))
         {
-            BestScoreMenuObject.GetComponent<Text>().text = "Best Score: " + HighScoreName + " : " + HighScore;
+            BestScoreMenuText.text = "Best Score: " + HighScoreName + " : " + HighScore;
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    
-    
 }

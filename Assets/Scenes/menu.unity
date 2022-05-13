@@ -548,7 +548,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: Enter Name...
 --- !u!222 &1049136953
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 1127719301}
   - component: {fileID: 1127719300}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -953,8 +953,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bdfdd3d2c8d2f5419c344ff4ca9514d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BestScoreMenuText: {fileID: 1139557988}
-  NameText: {fileID: 29083572}
+  BestScoreMenuText: {fileID: 1139557990}
+  NameText: {fileID: 1127719300}
   HighScore: 0
   HighScoreName: 
   CurrentSessionName: 

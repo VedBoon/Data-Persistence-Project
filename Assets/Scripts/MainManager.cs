@@ -12,6 +12,8 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    Text BestScoreText;
+
     public GameObject GameOverTextObject;
     public GameObject BestScoreGameObject;
 
@@ -20,19 +22,12 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    int sessionHighScore = 0;
-
-    
     // Start is called before the first frame update
     void Start()
     {
-        if (File.Exists(GameManager.Instance.path))
-        {
-            Text BestScoreGameText = BestScoreGameObject.GetComponent<Text>();
-            Text BestScoreMenuText = GameManager.Instance.BestScoreMenuObject.GetComponent<Text>();
+        BestScoreText = BestScoreGameObject.GetComponent<Text>();
 
-            BestScoreGameText.text = BestScoreMenuText.text;
-        }
+        SetBestScoreGameText();
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -50,10 +45,40 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    private void SetBestScoreGameText()
+    {
+        if (GameManager.Instance.SaveFileLoaded())
+        {
+            int HighScore;
+            if (GameManager.Instance.HighScore >= m_Points)
+            {
+                HighScore = GameManager.Instance.HighScore;
+            }
+            else
+            {
+                HighScore = m_Points;
+                GameManager.Instance.HighScoreName = GameManager.Instance.CurrentSessionName;
+                GameManager.Instance.HighScore = HighScore;
+                GameManager.Instance.SaveScore();
+            }
+            BestScoreText.text = $"Best Score {GameManager.Instance.HighScoreName} : {HighScore}";
+        }
+        else
+        {
+            GameManager.Instance.HighScoreName = GameManager.Instance.CurrentSessionName;
+            GameManager.Instance.HighScore = m_Points;
+            GameManager.Instance.SaveScore();
+
+            BestScoreText.text = $"Best Score {GameManager.Instance.CurrentSessionName} : {m_Points}";
+        }
+    }
+
     private void Update()
     {
         if (!m_Started)
         {
+            SetBestScoreGameText();
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
@@ -67,6 +92,8 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            SetBestScoreGameText();
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

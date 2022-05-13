@@ -8,6 +8,7 @@ public class MenuUI : MonoBehaviour
 {
     public void StartNewGame()
     {
+        GameManager.Instance.CurrentSessionName = GameManager.Instance.NameText.text;
         SceneManager.LoadScene(1);
     }
 
@@ -18,17 +19,5 @@ public class MenuUI : MonoBehaviour
 #else
         Application.quit();
 #endif
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
